@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.i("tag","inside onCreate")
+        Log.e("tag","inside onCreate")
 
 
 
@@ -51,9 +51,7 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.i("onSaveInstanceState","screen rotated")
-
-
-        //outState.putString("key",someRandomString)
+        outState.putString("key",someRandomString)
 
     }
 }
