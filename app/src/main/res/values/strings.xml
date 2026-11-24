@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">SimpleSaveState</string>
     <string name="string_on_page">Save State</string>
-
+    <string name="default_edit_text">mostly holds state without saving</string>
 </resources>

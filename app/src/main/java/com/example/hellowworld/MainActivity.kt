@@ -1,48 +1,44 @@
 package com.example.hellowworld
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
-
 
 /*
 Android activities do hold some state by default without saving. However, this state is limited to the UI state of the activity's views.
 For example, if you have an EditText and the user has entered some text into it, that text will be saved and restored automatically
 if the activity is destroyed and recreated due to a configuration change (like a screen rotation).
 
-
 One way to keep state is to overwrite onSaveInstanceState (Bundle) and using the Bundle object (just a map) keep the things we want to
 populate again as part of onCreate(Bundle). The correct usecase for onSaveInstanceState is to keep some minimal state when app goes into
 background and is killed by os and you want to keep some info for when the app is started back again by the user. Also Bundle has a size limit.
 
-
 this example generates a random value and retains it on screen rotation. if we do not save it in onSaveInstanceState, it will be lost.
  */
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val KEY_RANDOM_STRING = "key_random_string"
+    }
 
     var someRandomString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.e("tag","inside onCreate")
+        Log.d(TAG, "inside onCreate")
 
-
-
-        if(savedInstanceState != null){
-            Log.i("onCreate","savedInstanceState is not null")
-            // get the value from the bundle
-            someRandomString = savedInstanceState.getString("key").toString()
-        }else{
-            someRandomString =  Random.nextInt(10000).toString()
+        someRandomString = if (savedInstanceState != null) {
+            Log.i(TAG, "savedInstanceState is not null")
+            savedInstanceState.getString(KEY_RANDOM_STRING)
+        } else {
+            Random.nextInt(10000).toString()
         }
 
         findViewById<TextView>(R.id.textView).text = someRandomString
-
-        //comment out above line and uncomment below line to see the difference
-        //findViewById<TextView>(R.id.textView).text = Random.nextInt(10000).toString()
     }
 
     /*
@@ -50,8 +46,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.i("onSaveInstanceState","screen rotated")
-        outState.putString("key",someRandomString)
-
+        Log.i(TAG, "onSaveInstanceState: saving state")
+        outState.putString(KEY_RANDOM_STRING, someRandomString)
     }
 }
